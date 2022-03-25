@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+	<link rel="icon" href="/img/favicon.ico" sizes="48x48">
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+	<title>Hype Shop</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			outline: 0;
+			width: 100%;
+		}
+
+		#app {
+			display: flex;
+			justify-content: center;
+		}
+
+		img {
+			width: 100%;
+			object-fit: contain;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<picture>
+			<source media="(max-width: 1440px) and (min-width: 1000px)" srcset="img/1440x1080.png">
+			<source media="(max-width: 1000px) and (min-width: 800px)" srcset="img/800x900.png">
+			<source media="(max-width: 800px) and (min-width:  600px)" srcset="img/600x920.png">
+			<source media="(max-width: 600px) and (min-width: 320px)" srcset="img/400x600.png">
+			<img src="img/1920x1080.png">
+		</picture>
+	</div>
+	<script src="/js/desc.js"></script>
+</body>
+
+</html>
