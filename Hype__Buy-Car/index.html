@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+	<title>Hype BuyCar</title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+	<div id="app">
+		<div class="container" v-if="active">
+			<div class="inner-container">
+				<div class="header">
+					<div class="header__title">
+						<p>ტრანსპორტის შეძენა</p>
+					</div>
+					<div class="header__close-button" @click="closeMenu()">
+						<img src="img/close.png"></img>
+					</div>
+				</div>
+				<div class="main">
+					<img :src="carImage" class="main__car-image"></img>
+					<div class="main__info-container">
+						<div class="car-name">
+							<p class="name">{{carName}}</p>
+							<p class="number">მანქანის ნომერი: <span>{{carNumber}}</span></p>
+						</div>
+						<img :src="carLogoImg" class="car-logo"></img>
+						<div class="car-properties">
+							<div class="car-properties__item">
+								<div class="car-properties__name">
+									<p>სიჩქარე:</p>
+								</div>
+								<div class="car-properties__lvl">
+									<div v-for="i in carProps[0]"></div>
+								</div>
+							</div>
+							<div class="car-properties__item">
+								<div class="car-properties__name">
+									<p>ასწრაფება:</p>
+								</div>
+								<div class="car-properties__lvl">
+									<div v-for="i in carProps[1]"></div>
+								</div>
+							</div>
+							<div class="car-properties__item">
+								<div class="car-properties__name">
+									<p>მუხრუჭები:</p>
+								</div>
+								<div class="car-properties__lvl">
+									<div v-for="i in carProps[2]"></div>
+								</div>
+							</div>
+							<div class="car-properties__item">
+								<div class="car-properties__name">
+									<p>მუხრუჭები:</p>
+								</div>
+								<div class="car-properties__lvl">
+									<div v-for="i in carProps[3]"></div>
+								</div>
+							</div>
+						</div>
+						<div class="technics">
+							<p class="technics__title">ტექნიკური ტუნინგი:</p>
+							<div class="technics__items">
+								<div class="technics__item">
+									<img src="img/motor.png" class="technics__img"></img>
+									<p class="technics__lvl">{{carTechs[0]}}</p>
+								</div>
+								<div class="technics__item">
+									<img src="img/brake.png" class="technics__img"></img>
+									<p class="technics__lvl">{{carTechs[1]}}</p>
+								</div>
+								<div class="technics__item">
+									<img src="img/transmission.png" class="technics__img"></img>
+									<p class="technics__lvl">{{carTechs[2]}}</p>
+								</div>
+								<div class="technics__item">
+									<img src="img/strength.png" class="technics__img"></img>
+									<p class="technics__lvl">{{carTechs[3]}}</p>
+								</div>
+								<div class="technics__item">
+									<img src="img/honk.png" class="technics__img"></img>
+									<p class="technics__lvl">{{carTechs[4]}}</p>
+								</div>
+							</div>
+						</div>
+						<div class="owner-and-price">
+							<div class="owner">
+								<p class="name">{{player}}</p>
+								<p class="underline-text">მფლობელი</p>
+							</div>
+							<div class="price">
+								<p>{{price}}$</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="footer">
+					<div class="button agree" @click="btnAccept()">
+						<p>შეძენა</p>
+					</div>
+					<div class="button cancel" @click="closeMenu()">
+						<p>გაუქმება</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="js/script.js"></script>
+</body>
+
+</html>
