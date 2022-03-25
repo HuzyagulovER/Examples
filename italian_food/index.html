@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,user-scalable=no">
+	<link rel="icon" href="/img/favicon.ico" sizes="48x48">
+	<link rel="stylesheet" href="css/style.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+<title>Menu</title>
+</head>
+
+<body>
+	<div id="app">
+		<des :id="6"></des>
+		<header class="header">
+	<div class="container">
+		<div class="header__logo">
+			<img src="img/logo.svg" alt="Logo">
+		</div>
+		<nav class="header__nav nav">
+			<ul class="nav__list">
+				<li class="nav__item">
+					<p>About</p>
+				</li>
+				<li class="nav__item">
+					<p>Careers</p>
+				</li>
+				<li class="nav__item">
+					<p>Events</p>
+				</li>
+				<li class="nav__item">
+					<p>Products</p>
+				</li>
+				<li class="nav__item">
+					<p>Support</p>
+				</li>
+			</ul>
+		</nav>
+		<div class="header__burger">
+			<img src="img/icon-hamburger.svg" alt="Open menu">
+		</div>
+	</div>
+	<div class="container">
+		<div class="header__slogan">
+			<p>immersive experiences that deliver</p>
+		</div>
+	</div>
+</header>
+		<main class="main">
+			<section class="about">
+				<div class="about__image">
+					<picture>
+						<source srcset="img/mobile/image-interactive.jpg" media="(max-width: 375px)">
+						<img src="img/desktop/image-interactive.jpg" alt="image-interactive.jpg">
+					</picture>
+				</div>
+				<div class="about__description">
+					<p class="about__title">the leader in interactive vr</p>
+					<p class="about__text">Founded in 2011, Loopstudios has been producing world-class virtual reality
+						projects
+						for some of the best companies around the globe. Our award-winning creations have transformed
+						buisnesses
+						through digital experiences that bind to their brand.</p>
+				</div>
+			</section>
+			<section class="our-creations">
+				<div class="our-creations__container">
+					<p class="our-creations__title">our creations</p>
+					<div class="our-creations__see-all">
+						<p>see all</p>
+					</div>
+				</div>
+				<div class="our-creations__items">
+					<div class="our-creations__item">
+						<picture>
+							<source srcset="img/mobile/image-deep-earth.jpg" media="(max-width: 690px)">
+							<img src="img/desktop/image-deep-earth.jpg" alt="deep earth">
+						</picture>
+						<p class="our-creations__item-title">deep<br />earth</p>
+					</div>
+					<div class="our-creations__item">
+						<picture>
+							<source srcset="img/mobile/image-night-arcade.jpg" alt="night arcade" media="(max-width: 690px)">
+							<img src="img/desktop/image-night-arcade.jpg" alt="night arcade">
+						</picture>
+						<p class="our-creations__item-title">night<br />arcade</p>
+					</div>
+					<div class="our-creations__item">
+						<picture>
+							<source srcset="img/mobile/image-soccer-team.jpg" alt="soccer team vr" media="(max-width: 690px)">
+							<img src="img/desktop/image-soccer-team.jpg" alt="soccer team vr">
+						</picture>
+						<p class="our-creations__item-title">soccer<br />team vr</p>
+					</div>
+					<div class="our-creations__item">
+						<picture>
+							<source srcset="img/mobile/image-grid.jpg" alt="the grid" media="(max-width: 690px)">
+							<img src="img/desktop/image-grid.jpg" alt="the grid">
+						</picture>
+						<p class="our-creations__item-title">the<br />grid</p>
+					</div>
+					<div class="our-creations__item">
+						<picture>
+							<source srcset="img/mobile/image-from-above.jpg" alt="from up above vr" media="(max-width: 690px)">
+							<img src="img/desktop/image-from-above.jpg" alt="from up above vr">
+						</picture>
+						<p class="our-creations__item-title">from up<br />above vr</p>
+					</div>
+					<div class="our-creations__item">
+						<picture>
+							<source srcset="img/mobile/image-pocket-borealis.jpg" alt="pocket borealis"
+								media="(max-width: 690px)">
+							<img src="img/desktop/image-pocket-borealis.jpg" alt="pocket borealis">
+						</picture>
+						<p class="our-creations__item-title">pocket<br />borealis</p>
+					</div>
+					<div class="our-creations__item">
+						<picture>
+							<source srcset="img/mobile/image-curiosity.jpg" alt="the curiosity" media="(max-width: 690px)">
+							<img src="img/desktop/image-curiosity.jpg" alt="the curiosity">
+						</picture>
+						<p class="our-creations__item-title">the<br />curiosity</p>
+					</div>
+					<div class="our-creations__item">
+						<picture>
+							<source srcset="img/mobile/image-fisheye.jpg" alt="make it fisheye" media="(max-width: 690px)">
+							<img src="img/desktop/image-fisheye.jpg" alt="make it fisheye">
+						</picture>
+						<p class="our-creations__item-title">make it<br />fisheye</p>
+					</div>
+				</div>
+				<div class="our-creations__see-all">
+					<p>see all</p>
+				</div>
+			</section>
+		</main>
+		<footer class="footer">
+	<div class="footer__container">
+		<div class="footer__wrapper">
+			<div class="footer__logo">
+				<img src="img/logo.svg" alt="logo">
+			</div>
+			<ul class="footer__nav">
+				<li class="footer__item">
+					<p>About</p>
+				</li>
+				<li class="footer__item">
+					<p>Careers</p>
+				</li>
+				<li class="footer__item">
+					<p>Events</p>
+				</li>
+				<li class="footer__item">
+					<p>Products</p>
+				</li>
+				<li class="footer__item">
+					<p>Support</p>
+				</li>
+			</ul>
+		</div>
+		<div class="footer__wrapper">
+			<div class="footer__socials">
+				<div class="footer__social-icon">
+					<img src="img/icon-facebook.svg" alt="facebook">
+				</div>
+				<div class="footer__social-icon">
+					<img src="img/icon-twitter.svg" alt="twitter">
+				</div>
+				<div class="footer__social-icon">
+					<img src="img/icon-pinterest.svg" alt="pinterest">
+				</div>
+				<div class="footer__social-icon">
+					<img src="img/icon-instagram.svg" alt="instagram">
+				</div>
+			</div>
+			<div class="footer__rights">
+				<p>&#169; 2021 Loopstudios. All rights reserved.</p>
+			</div>
+		</div>
+	</div>
+</footer>
+	</div>
+	<script src="/js/desc.js"></script>
+<script src="js/script.js"></script>
+</body>
+
+</html>

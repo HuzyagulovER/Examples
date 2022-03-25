@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/style.css">
+	<title>Menu</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+	<script src="https://d3js.org/d3.v4.js"></script>
+</head>
+
+<body>
+
+	<div id="app" class="app" oncontextmenu="return false">
+		<div class="app__container">
+			<div class="clothes">
+				<div class="clothes__container">
+					<!-- <div v-for="(value, i) in characterSlotsInventory">
+						<img :src="value.img" alt="" class="clothes__bg-img">
+						<div v-if="!value.isEmpty && value.item"> -->
+					<!-- !Проблема! В начальной верстке быстрые слоты и слоты в надетых вещах были такого же размера,
+								!что и все остальные ячейки, а в новой - разного.
+								!Поэтому нужно, чтобы в этих слотах ширина и высота устанавливались как "100%".
+								!Этот текст написан там, где нужно реализовать такие ширину и высоту.-->
+					<!-- <div class="draggable" :style="{width: '100%', height: '100%'}"
+								:class="[{small: value.item.width == 1 || value.item.height == 1}, value.item.class]"
+								v-bind:data-id="value.item.id">
+								<p class="draggable__name">{{value.item.name}}</p>
+								<p class="draggable__amount">{{value.item.amount}}шт.</p>
+								<img :src="value.item.img" :alt="value.item.name" class="draggable__img">
+							</div>
+						</div> -->
+					<div v-for="(value, i) in characterSlotsInventory" class="item__container">
+						<div class="item">
+							<img :src="characterSlotsInventory[i].img" class="clothes__bg-img">
+							<div v-if="!characterSlotsInventory[i].isEmpty && characterSlotsInventory[i].item">
+								<div class="draggable" :style="{width: '100%', height: '100%'}"
+									:data-id="characterSlotsInventory[i].item.id">
+									<p class="draggable__name">
+										{{characterSlotsInventory[i].item.name}}</p>
+									<p class="draggable__amount">
+										{{characterSlotsInventory[i].item.amount}}шт.</p>
+									<img :src="characterSlotsInventory[i].item.img" :alt="characterSlotsInventory[i].item.name"
+										class="draggable__img">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+			<div class="life-needs">
+				<div class="life-needs__thirst thirst">
+					<div class="thirst__container">
+						<div class="thirst__icon">
+							<img src="img/icon__drop.svg" alt="Thirst">
+						</div>
+						<div class="thirst__title">
+							<p>Жажда</p>
+						</div>
+						<div class="thirst__percent">
+							<p>{{thirstPercent}}%</p>
+						</div>
+					</div>
+					<div class="thirst__container">
+						<div class="thirst__line">
+							<div class="thirst__fill-line" :style="{width: thirstPercent+'%'}"></div>
+						</div>
+					</div>
+				</div>
+				<div class="life-needs__hunger hunger">
+					<div class="hunger__container">
+						<div class="hunger__icon">
+							<img src="img/icon__burger.svg" alt="Hunger">
+						</div>
+						<div class="hunger__title">
+							<p>Голод</p>
+						</div>
+						<div class="hunger__percent">
+							<p>{{hungryPercent}}%</p>
+						</div>
+					</div>
+					<div class="hunger__container">
+						<div class="hunger__line">
+							<div class="hunger__fill-line" :style="{width: hungryPercent+'%'}"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="environment" v-show="environment">
+				<div class="environment__wrapper">
+					<div class="environment__title title">
+						<div class="title__line"></div>
+						<p class="title__text">Окружение</p>
+					</div>
+				</div>
+				<div class="environment__container">
+					<div class="environment__scroll-container">
+						<div class="environment__blocks" :class="{throwAway: mousedown}">
+							<div class="environment__block block" v-for="(value, i) in itemsEnvironmentSlots">
+								<div v-if="!value.isEmpty && value.item">
+									<div class="draggable"
+										:style="{width:  BLOCK_WIDTH * value.item.width + 'px', height:  BLOCK_WIDTH * value.item.height + 'px'}"
+										:class="[{small: value.item.width == 1 || value.item.height == 1}, value.item.class]"
+										v-bind:data-id="value.item.id">
+										<p class="draggable__name">{{value.item.name}}</p>
+										<p class="draggable__amount">{{value.item.amount}}шт.</p>
+										<img :src="value.item.img" :alt="value.item.name" class="draggable__img">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="environment__throw throw" :class="{shown: mousedown, focused: mouseover}">
+						<div class="throw__image">
+							<img src="img/icon__trash.svg" alt="Throw away">
+						</div>
+						<div class="throw__text">
+							<p>Перетащите, чтобы выкинуть</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="exchange" v-show="exchange">
+				<div class="exchange__proponent proponent">
+					<div class="proponent__container">
+						<div class="proponent__status status ready" v-if="exchangeReady">
+							<div class="status__sign">
+								<img src="img/icon__ready.svg" alt="Ready">
+							</div>
+							<div class="status__title title">
+								<div class="title__line"></div>
+								<p class="title__text">Готов</p>
+							</div>
+						</div>
+						<div class="proponent__status status not-ready" v-else>
+							<div class="status__sign">
+								<img src="img/icon__not-ready.svg" alt="Not ready">
+							</div>
+							<div class="status__title title">
+								<div class="title__line"></div>
+								<p class="title__text">Не готов</p>
+							</div>
+						</div>
+						<div class="proponent__wrapper">
+							<div class="proponent__scroll-container">
+								<div class="proponent__scroll">
+									<div class="proponent__blocks">
+										<div class="proponent__block block" v-for="(value, i) in itemsProponentSlots">
+											<div v-if="!value.isEmpty && value.item">
+												<div class="draggable"
+													:style="{width:  BLOCK_WIDTH * value.item.width + 'px', height:  BLOCK_WIDTH * value.item.height + 'px'}"
+													:class="[{small: value.item.width == 1 || value.item.height == 1}, value.item.class]"
+													v-bind:data-id="value.item.id">
+													<p class="draggable__name">{{value.item.name}}</p>
+													<p class="draggable__amount">{{value.item.amount}}шт.</p>
+													<img :src="value.item.img" :alt="value.item.name" class="draggable__img">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="proponent__info">
+								<img src="img/icon__user-blue.svg" alt="Person" class="proponent__person-icon">
+								<p class="proponent__nickname">{{nickname}}&ensp;<span>(Вы)</span></p>
+								<p class="proponent__amount">{{amount}}$</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="exchange__opponent opponent">
+					<div class="opponent__container">
+						<div class="opponent__status status ready" v-if="exchangeOpponentReady">
+							<div class="status__sign">
+								<img src="img/icon__ready.svg" alt="Ready">
+							</div>
+							<div class="status__title title">
+								<div class="title__line"></div>
+								<p class="title__text">Готов</p>
+							</div>
+						</div>
+						<div class="opponent__status status not-ready" v-else>
+							<div class="status__sign">
+								<img src="img/icon__not-ready.svg" alt="Not ready">
+							</div>
+							<div class="status__title title">
+								<div class="title__line"></div>
+								<p class="title__text">Не готов</p>
+							</div>
+						</div>
+						<div class="opponent__wrapper">
+							<div class="opponent__scroll-container">
+								<div class="opponent__scroll">
+									<div class="opponent__blocks">
+										<div class="opponent__block block" v-for="(value, i) in itemsOpponentSlots">
+											<div v-if="!value.isEmpty && value.item">
+												<div class="draggable"
+													:style="{width:  BLOCK_WIDTH * value.item.width + 'px', height:  BLOCK_WIDTH * value.item.height + 'px'}"
+													:class="[{small: value.item.width == 1 || value.item.height == 1}, value.item.class]"
+													v-bind:data-id="value.item.id">
+													<p class="draggable__name">{{value.item.name}}</p>
+													<p class="draggable__amount">{{value.item.amount}}шт.</p>
+													<img :src="value.item.img" :alt="value.item.name" class="draggable__img">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="opponent__info">
+								<img src="img/icon__user-grey.svg" alt="Person" class="opponent__person-icon">
+								<p class="opponent__nickname">{{opponentNickname}}</p>
+								<p class="opponent__amount">{{opponentAmount}}$</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="exchange__confirm confirm">
+					<form class="confirm__form">
+						<input class="confirm__amount" placeholder="Введите сумму" />
+						<button class="confirm__button">Подтвердить</button>
+					</form>
+				</div>
+			</div>
+			<div class="modification" v-show="modification">
+				<div class="modification__wrapper">
+					<div class="modification__title title">
+						<div class="title__line"></div>
+						<p class="title__text">Модификация</p>
+					</div>
+				</div>
+				<div class="modification__container">
+					<div class="modification__weapon weapon" v-bind:data-id="modifyItemActive.id">
+						<div class="weapon__name">{{modifyItemActive.name}}</div>
+						<div class="weapon__weight">{{modifyItemActive.weight}}кг</div>
+						<img class="weapon__image" :src="modifyItemActive.img">
+					</div>
+					<div class="modification__items items">
+						<div class="items__container">
+							<div class="items__item item" v-for="(value, i) in itemsModifySlots" v-if="i<5">
+								<div v-if="!value.isEmpty && value.item" style="width: 100%;height: 100%;">
+									<div class="draggable"
+										:class="[{small: value.item.width == 1 || value.item.height == 1}, value.item.class]"
+										v-bind:data-id="value.item.id">
+										<p class="draggable__name">{{value.item.name}}</p>
+										<p class="draggable__amount">{{value.item.amount}}шт.</p>
+										<img :src="value.item.img" :alt="value.item.name" class="draggable__img">
+									</div>
+								</div>
+								<img src="img/icon__square.svg" alt="Item" class="items__bg-img">
+							</div>
+						</div>
+						<div class="items__container">
+							<div class="items__item item" v-for="(value, i) in itemsModifySlots" v-if="i>4">
+								<div v-if="!value.isEmpty && value.item" style="width: 100%;height: 100%;">
+									<div class="draggable"
+										:class="[{small: value.item.width == 1 || value.item.height == 1}, value.item.class]"
+										v-bind:data-id="value.item.id">
+										<p class="draggable__name">{{value.item.name}}</p>
+										<p class="draggable__amount">{{value.item.amount}}шт.</p>
+										<img :src="value.item.img" :alt="value.item.name" class="draggable__img">
+									</div>
+								</div>
+								<img src="img/icon__square.svg" alt="Item" class="items__bg-img">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="trunk" v-show="trunk">
+				<div class="trunk__wrapper">
+					<div class="trunk__weight weight">
+						<div class="weight__circle roll"></div>
+						<div class="weight__text">
+							<p>{{trunkWeight}}кг</p>
+						</div>
+					</div>
+					<div class="trunk__title title">
+						<div class="title__line"></div>
+						<p class="title__text">Багажник</p>
+					</div>
+				</div>
+				<div class="trunk__container">
+					<div class="trunk__blocks">
+						<div class="trunk__block block" v-for="(value, i) in itemsTrunkSlots">
+							<div v-if="!value.isEmpty && value.item">
+								<div class="draggable"
+									:style="{width:  BLOCK_WIDTH * value.item.width + 'px', height: BLOCK_WIDTH * value.item.height + 'px'}"
+									:class="[{small: value.item.width == 1 || value.item.height == 1}, value.item.class]"
+									:data-id="value.item.id">
+									<p class="draggable__name">{{value.item.name}}</p>
+									<p class="draggable__amount">{{value.item.amount}}шт.</p>
+									<img :src="value.item.img" :alt="value.item.name" class="draggable__img">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="inventory-bag">
+				<div class="inventory-bag__wrapper">
+					<div class="inventory-bag__weight weight">
+						<div class="weight__circle roll"></div>
+						<div class="weight__text">
+							<p>{{inventoryWeight}}кг</p>
+						</div>
+					</div>
+					<div class="inventory-bag__title title">
+						<div class="title__line"></div>
+						<p class="title__text">Инвентарь</p>
+					</div>
+				</div>
+				<div class="inventory-bag__container">
+					<div class="inventory-bag__blocks">
+						<ul class="inventory-bag__inventory inventory">
+							<li class="inventory__block block" v-for="(value, i) in itemsInventorySlots">
+								<div v-if="!value.isEmpty && value.item">
+									<div class="draggable"
+										:style="{width:  BLOCK_WIDTH * value.item.width + 'px', height:  BLOCK_WIDTH * value.item.height + 'px'}"
+										:class="[{small: value.item.width == 1 || value.item.height == 1}, value.item.class]"
+										v-bind:data-id="value.item.id">
+										<p class="draggable__name">{{value.item.name}}</p>
+										<p class="draggable__amount">{{value.item.amount}}шт.</p>
+										<img :src="value.item.img" :alt="value.item.name" class="draggable__img">
+									</div>
+								</div>
+							</li>
+						</ul>
+						<div class="inventory-bag__bag bag">
+							<div class="bag__block block" v-for="(value, i) in itemsBugSlots"
+								:class="[bagShow ? 'unblocked' : 'blocked']">
+								<div v-if="!value.isEmpty && value.item">
+									<div class="draggable"
+										:style="{width:  BLOCK_WIDTH * value.item.width + 'px', height:  BLOCK_WIDTH * value.item.height + 'px'}"
+										:class="[{small: value.item.width == 1 || value.item.height == 1}, value.item.class]"
+										v-bind:data-id="value.item.id">
+										<p class="draggable__name">{{value.item.name}}</p>
+										<p class="draggable__amount">{{value.item.amount}}шт.</p>
+										<img :src="value.item.img" :alt="value.item.name" class="draggable__img">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="fast-slots">
+				<div v-for="(value, i) in fastSlotsInventory" :class="['fast-slots__slot-'+i, 'slot-'+i]">
+					<div :class="['slot-'+i+'__container']">
+						<div v-if="!value.isEmpty && value.item">
+							<!-- !Проблема! В начальной верстке быстрые слоты и слоты в надетых вещах были такого же размера,
+								!что и все остальные ячейки, а в новой - разного.
+								!Поэтому нужно, чтобы в этих слотах ширина и высота устанавливались как "100%".
+								!Этот текст написан там, где нужно реализовать такие ширину и высоту.-->
+							<div class="draggable" :style="{width: '100%', height: '100%'}"
+								:class="[{small: value.item.width == 1 || value.item.height == 1}, value.item.class]"
+								v-bind:data-id="value.item.id">
+								<p class="draggable__name">{{value.item.name}}</p>
+								<p class="draggable__amount">{{value.item.amount}}шт.</p>
+								<img :src="value.item.img" :alt="value.item.name" class="draggable__img">
+							</div>
+						</div>
+					</div>
+					<div :class="['slot-'+i+'__divisor']"></div>
+				</div>
+			</div>
+			<ul class="context-menu" :class="{hide: !context}">
+				<li v-for="(value, i) in renderContextMenu()" :data-action="value.action">
+					<p>{{value.title}}</p>
+				</li>
+				<!-- Для активации раздела "Разделить" нужно, чтобы divide = true -->
+			</ul>
+			<div class="item-info" :class="{hide: !itemInfo}">
+				<div class="item-info__container">
+					<div class="item-info__props">
+						<p class="item-info__name">{{itemInfoItem.name}}</p>
+						<p class="item-info__weight">{{itemInfoItem.weight}}кг</p>
+					</div>
+					<p class="item-info__description">{{itemInfoItem.description}}</p>
+				</div>
+				<div class="item-info__serial-number serial-number">
+					<p class="serial-number__text">Серийный номер:</p>
+					<p class="serial-number__number">{{itemInfoItem.serialNumber}}</p>
+				</div>
+			</div>
+			<transition name="modal">
+				<div class="divide" v-show="divide">
+					<div class="divide__title">
+						<p>Разделить предмет</p>
+					</div>
+					<div class="divide__text">
+						<p>Введите кол-во</p>
+					</div>
+					<div class="divide__input">
+						<input type="text" v-bind:max="divideMax" v-bind:max="value" placeholder="0шт.">
+					</div>
+					<div class="divide__range range">
+						<div class="range__track"></div>
+						<div class="range__fill"></div>
+						<div class="range__thumb"></div>
+						<input class="range__input" type="range" v-bind:max="divideMax">
+					</div>
+					<div class="divide__buttons buttons">
+						<div class="buttons__divide">
+							<p>Разделить</p>
+						</div>
+						<div class="buttons__cancel" @click="divide = false">
+							<p>Отменить</p>
+						</div>
+					</div>
+				</div>
+			</transition>
+		</div>
+		<img src="img/534534535.png" alt="Background" class="app__background-image">
+	</div>
+
+	<script src="js/script.js"></script>
+</body>
+
+</html>
