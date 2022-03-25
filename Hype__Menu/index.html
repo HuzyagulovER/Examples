@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu</title>
+<script src="https://d3js.org/d3.v4.js"></script>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+<link rel="preload" href="img/image__background.bmp" as="image" />
+<link rel="preload" href="img/image__man1.png" as="image" />
+<link rel="preload" href="img/image__man2.png" as="image" />
+<link rel="preload" href="img/image__man3.png" as="image" />
+</head>
+
+<body>
+	<div id="app">
+		
+		<div class="container" v-if="active">
+			<div class="nav">
+				<div class="nav__items">
+					<div class="nav__item" :class="{active: main}" @click="closeMenu(); openMain(event)">
+						<img src="img/icon__nav_main.svg" alt="Main" class="nav__icon">
+						<p class="nav__name">Главная</p>
+					</div>
+					<div class="nav__item" :class="{active: donat}" @click="closeMenu(); openDonat();">
+						<img src="img/icon__nav_donat.svg" alt="Donat" class="nav__icon">
+						<p class="nav__name">Донат</p>
+					</div>
+					<div class="nav__item" :class="{active: report}" @click="closeMenu(); openReport()">
+						<img src="img/icon__nav_report.svg" alt="Report" class="nav__icon">
+						<p class="nav__name">Репорт</p>
+					</div>
+					<div class="nav__item" :class="{active: quests}" @click="closeMenu(); openQuests(event)">
+						<img src="img/icon__nav_quests.svg" alt="Quests" class="nav__icon">
+						<p class="nav__name">Квесты</p>
+					</div>
+					<div class="nav__item" :class="{active: faq}" @click="closeMenu(); openFaq()">
+						<img src="img/icon__nav_faq.svg" alt="FAQ" class="nav__icon">
+						<p class="nav__name">FAQ</p>
+					</div>
+					<div class="nav__item" :class="{active: settings}" @click="closeMenu(); openSettings(event)">
+						<img src="img/icon__nav_settings.svg" alt="Settings" class="nav__icon">
+						<p class="nav__name">Настройки</p>
+					</div>
+					<div class="nav__item" :class="{active: adminPanel}" @click="closeMenu(); openAdminPanel()">
+						<img src="img/icon__nav_admin-panel.svg" alt="Admin_panel" class="nav__icon">
+						<p class="nav__name">Админ панель</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="main" v-if='main'>
+				<img src="img/image__man1.png" alt="Man" class="main__image_man-1">
+				<div class="main__container">
+					<img src="img/image__man1.png" alt="Man" class="main__image_man-2">
+					<div class="grid-container">
+						<div class="experience-container">
+							<div class="exp">
+								<p class="roll" data-thickness=".5"></p>
+								<div class="exp__container">
+									<p class="exp__text">EXP</p>
+									<p class="exp__value"><span class="value">{{experience}}</span>/100</p>
+								</div>
+							</div>
+
+						</div>
+						<div class="person">
+							<div class="person__info info">
+								<img src="img/image__container-background.jpg" alt="Background"
+									class="person__background-image">
+								<div class="info__level level">
+									<p class="roll"></p>
+									<p class="level__number"><span class="number">{{level}}</span>lvl</p>
+								</div>
+								<div class="info__container">
+									<p class="info__nickname">{{nickname}}</p>
+									<p class="info__id">ID <span class="id">{{ID}}</span></p>
+								</div>
+							</div>
+							<div class="person__status status">
+								<img src="img/image__container-background.jpg" alt="Background"
+									class="person__background-image">
+								<div class="status__image">
+									<img src="img/image__status.png" alt="Status_image">
+								</div>
+								<div class="status__container">
+									<p class="status__name">Статус: <span class="status-name">{{status}}</span></p>
+									<p class="status__left">Осталось <span class="days-left">{{daysLeft}}</span> дней</p>
+								</div>
+							</div>
+							<div class="person__balance balance">
+								<img src="img/image__container-background.jpg" alt="Background"
+									class="person__background-image">
+								<div class="balance__image">
+									<img src="img/image__balance.png" alt="balance__image">
+								</div>
+								<div class="balance__container">
+									<p class="balance__value"><span class="value">{{balance}}</span> RUB</p>
+									<p class="balance__text">Баланс</p>
+								</div>
+								<div class="balance__add">
+									<div class="balance__add-button">
+										<img src="img/icon__plus.svg" alt="Add_image">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="character">
+							<div class="character__info info">
+								<div class="info__items">
+									<div class="info__item cash">
+										<div class="info__image">
+											<img src="img/icon__wallet.svg" alt="Wallet_image">
+										</div>
+										<div class="info__container">
+											<p class="info__item-title">Наличка</p>
+											<p class="info__item-value"><span class="cash">{{characterAbilities[0]}}</span> $</p>
+										</div>
+									</div>
+									<div class="info__item cashless">
+										<div class="info__image">
+											<img src="img/icon__bank.svg" alt="Bank_image">
+										</div>
+										<div class="info__container">
+											<p class="info__item-title">Безнал</p>
+											<p class="info__item-value"><span class="cashless">{{characterAbilities[1]}}</span> $
+											</p>
+										</div>
+
+									</div>
+									<div class="info__item fraction">
+										<div class="info__image">
+											<img src="img/icon__fraction.svg" alt="Fraction_image">
+										</div>
+										<div class="info__container">
+											<p class="info__item-title">Фракция</p>
+											<p class="info__item-value">{{characterAbilities[2]}}</p>
+										</div>
+									</div>
+									<div class="info__item fraction-rang">
+										<div class="info__image">
+											<img src="img/icon__rang.svg" alt="Rang_image">
+										</div>
+										<div class="info__container">
+											<p class="info__item-title">Ранг во фракции</p>
+											<p class="info__item-value">{{characterAbilities[3]}}</p>
+										</div>
+									</div>
+									<div class="info__item workplace">
+										<div class="info__image">
+											<img src="img/icon__work.svg" alt="Workplace_image">
+										</div>
+										<div class="info__container">
+											<p class="info__item-title">Место работы</p>
+											<p class="info__item-value">{{characterAbilities[4]}}</p>
+										</div>
+									</div>
+									<div class="info__item pass-number">
+										<div class="info__image">
+											<img src="img/icon__pass.svg" alt="Pass_image">
+										</div>
+										<div class="info__container">
+											<p class="info__item-title">Номер паспорта</p>
+											<p class="info__item-value">{{characterAbilities[5]}}</p>
+										</div>
+									</div>
+									<div class="info__item phone-number">
+										<div class="info__image">
+											<img src="img/icon__number.svg" alt="Phone-number_image">
+										</div>
+										<div class="info__container">
+											<p class="info__item-title">Номер телефона</p>
+											<p class="info__item-value">+<span class="number">{{characterAbilities[6]}}</span></p>
+										</div>
+									</div>
+									<div class="info__item licences">
+										<div class="info__image">
+											<img src="img/icon__license.svg" alt="Licences_image">
+										</div>
+										<div class="info__container">
+											<p class="info__item-title">Лицензии</p>
+											<p class="info__item-value">{{characterAbilities[7]}}</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="character__achievements achievements">
+								<div class="achievements__items">
+									<div class="achievements__item transport" @click="openMyAchivements('transport')">
+										<div class="achievements__image">
+											<img src="img/icon__car.svg" alt="Car_image">
+										</div>
+										<div class="achievements__title">Мой транспорт</div>
+									</div>
+									<div class="achievements__item buisness" @click="openMyAchivements('buisness')">
+										<div class="achievements__image">
+											<img src="img/icon__bag.svg" alt="Bag_image">
+										</div>
+										<div class="achievements__title">Мой бизнес</div>
+									</div>
+									<div class="achievements__item parking" @click="openMyAchivements('parking')">
+										<div class="achievements__image">
+											<img src="img/icon__parking.svg" alt="Parking_image">
+										</div>
+										<div class="achievements__title">Моя парковка</div>
+									</div>
+									<div class="achievements__item house" @click="openMyAchivements('houses')">
+										<div class="achievements__image">
+											<img src="img/icon__home.svg" alt="Home_image">
+										</div>
+										<div class="achievements__title">Мои дома</div>
+									</div>
+								</div>
+							</div>
+							<div class="character__abilities abilities">
+								<div class="abilities__items">
+									<div class="abilities__item shooting">
+										<div class="abilities__container">
+											<div class="abilities__item-title">Стрельба</div>
+											<div class="abilities__item-value"><span
+													class="value">{{characterInfo[0]}}</span>/100&nbsp;&nbsp;&nbsp;<span
+													class="exp">EXP</span></div>
+										</div>
+										<div class="abilities__item-progress progress">
+											<p class="roll"></p>
+											<p class="progress__level">{{characterInfo[0]}}</p>
+										</div>
+									</div>
+									<div class="abilities__item driving">
+										<div class="abilities__container">
+											<div class="abilities__item-title">Вождение</div>
+											<div class="abilities__item-value"><span
+													class="value">{{characterInfo[1]}}</span>/100&nbsp;&nbsp;&nbsp;<span
+													class="exp">EXP</span></div>
+										</div>
+										<div class="abilities__item-progress progress">
+											<p class="roll"></p>
+											<p class="progress__level">{{characterInfo[1]}}</p>
+										</div>
+									</div>
+									<div class="abilities__item endurance">
+										<div class="abilities__container">
+											<div class="abilities__item-title">Выносливость</div>
+											<div class="abilities__item-value"><span
+													class="value">{{characterInfo[2]}}</span>/100&nbsp;&nbsp;&nbsp;<span
+													class="exp">EXP</span></div>
+										</div>
+										<div class="abilities__item-progress progress">
+											<p class="roll"></p>
+											<p class="progress__level">{{characterInfo[2]}}</p>
+										</div>
+									</div>
+									<div class="abilities__item speed">
+										<div class="abilities__container">
+											<div class="abilities__item-title">Скорость</div>
+											<div class="abilities__item-value"><span
+													class="value">{{characterInfo[3]}}</span>/100&nbsp;&nbsp;&nbsp;<span
+													class="exp">EXP</span></div>
+										</div>
+										<div class="abilities__item-progress progress">
+											<p class="roll"></p>
+											<p class="progress__level">{{characterInfo[3]}}</p>
+										</div>
+									</div>
+									<div class="abilities__item jump">
+										<div class="abilities__container">
+											<div class="abilities__item-title">Прыгучесть</div>
+											<div class="abilities__item-value"><span
+													class="value">{{characterInfo[4]}}</span>/100&nbsp;&nbsp;&nbsp;<span
+													class="exp">EXP</span></div>
+										</div>
+										<div class="abilities__item-progress progress">
+											<p class="roll"></p>
+											<p class="progress__level">{{characterInfo[4]}}</p>
+										</div>
+									</div>
+									<div class="abilities__item stealth">
+										<div class="abilities__container">
+											<div class="abilities__item-title">Скрытность</div>
+											<div class="abilities__item-value"><span
+													class="value">{{characterInfo[5]}}</span>/100&nbsp;&nbsp;&nbsp;<span
+													class="exp">EXP</span></div>
+										</div>
+										<div class="abilities__item-progress progress">
+											<p class="roll"></p>
+											<p class="progress__level">{{characterInfo[5]}}</p>
+										</div>
+									</div>
+									<div class="abilities__item luckiness">
+										<div class="abilities__container">
+											<div class="abilities__item-title">Везучесть</div>
+											<div class="abilities__item-value"><span
+													class="value">{{characterInfo[6]}}</span>/100&nbsp;&nbsp;&nbsp;<span
+													class="exp">EXP</span></div>
+										</div>
+										<div class="abilities__item-progress progress">
+											<p class="roll"></p>
+											<p class="progress__level">{{characterInfo[6]}}</p>
+										</div>
+									</div>
+									<div class="abilities__item immunity">
+										<div class="abilities__container">
+											<div class="abilities__item-title">Иммунитет</div>
+											<div class="abilities__item-value"><span
+													class="value">{{characterInfo[7]}}</span>/100&nbsp;&nbsp;&nbsp;<span
+													class="exp">EXP</span></div>
+										</div>
+										<div class="abilities__item-progress progress">
+											<p class="roll"></p>
+											<p class="progress__level">{{characterInfo[7]}}</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="report" v-if="report">
+				<img src="img/image__man2.png" alt="Man" class="report__image_man">
+				<div class="report__container">
+					<div class="report__grid-container">
+						<div class="report__description description">
+							<div class="description__container">
+								<div class="description__title">РЕПОРТ</div>
+								<div class="description__text">В данном разделе вы можете обратиться к нашим специалистам по
+									вопросам оказания тех. помощи, а так же сообщить о нарушении!</div>
+							</div>
+						</div>
+						<div class="report__chat chat">
+							<div class="chat__container">
+								<div class="chat__header header">
+									<div class="header__image">
+										<img src="img/icon__nav_report.svg" alt="Icon">
+									</div>
+									<p class="header__title">Техническая поддержка</p>
+								</div>
+								<div class="chat__body body">
+									<div class="body__container">
+										<div class="message__container" v-for="i in messageList">
+											<div class="message" v-if="i.status != 'chatinfo'"
+												:class="{myMessage: i.status == 'user', adminMessage: i.status == 'admin'}">
+												<p class="message__info">
+													<span class="message__sender" v-if="i.status == 'user'">Вы</span>
+													<span class="message__sender" v-if="i.status == 'admin'">Администратор</span>
+													<span class="message__time">{{i.time}}</span>
+												</p>
+												<p class="message__text">{{i.text}}</p>
+											</div>
+											<div class="admin-connect" v-if="i.status == 'chatinfo'">
+												<div class="admin-connect__container">
+													<p>К вам присоединился администратор: <span
+															class="admin-connect__nickname">Ivan_NArkoman #4515</span></p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="chat__footer footer">
+									<div class="footer__container">
+										<form action="#" class="footer__form">
+											<textarea class="footer__input" placeholder="Опишите свою проблему..."></textarea>
+											<button class="footer__button">
+												<p>Отправить</p>
+												<img src="img/icon__plane.svg" alt="Send">
+											</button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<img src="img/image__question-sign.png" alt="Question_sign" class="report__image_question-sign image1">
+				<img src="img/image__question-sign.png" alt="Question_sign" class="report__image_question-sign image2">
+				<img src="img/image__question-sign.png" alt="Question_sign" class="report__image_question-sign image3">
+			</div>
+
+			<div class="quests" v-if="quests">
+				<img src="img/image__man3.png" alt="Man" class="quests__man">
+				<div class="quests__container">
+					<div class="quests__grid-container">
+						<div class="quests__list list">
+							<div class="list__container">
+								<div class="list__items">
+									<div class="list__item item" :class="{active: !active}" v-for="item in questsList">
+										<div class="item__container">
+											<div class="list__title title">
+												<img src="img/icon__nav_quests.svg" alt="Icon" class="title__image">
+												<p class="title__text">{{item.title}}</p>
+											</div>
+											<div class="list__progress progress">
+												<p class="progress__text">{{item.done}} из {{item.max}}</p>
+												<div class="progress__bar">
+													<div class="progress__inner-bar"
+														:style="{width: item.done / item.max * 100 + '%'}">
+													</div>
+												</div>
+											</div>
+											<div class="list__open-description open-description">
+												<div class="open-description__container">
+													<img src="img/icon__right-arrow.svg" alt="Open" class="open-description__image">
+												</div>
+											</div>
+										</div>
+										<div class="list__description description">
+											<p class="description__text">{{item.description}}</p>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="quests__description description">
+							<p class="description__title">ДОСТИЖЕНИЯ</p>
+							<p class="description__text1">Выполняйте ежедневные достижения и получайте гарантированные призы.
+								Приз может зависеть как от сложности выполнения достижения так и от колличества отыгрываемого
+								времени.</p>
+							<p class="description__text2">Достижения будут обновляться каждый месяц 21-го числа в 00:00 по МСК.
+							</p>
+							<p class="description__text2">За успешное выполнение всех достижений у вас будет возхможность
+								забрать особоый подарок.</p>
+						</div>
+						<div class="quests__present present">
+							<hr>
+							<div class="present__grid-container">
+								<div class="present__title">
+									<img src="img/icon__time.svg" alt="Icon" class="present__title-image">
+									<p class="present__title-text">ОСОБЫЙ ПОДАРОК</p>
+								</div>
+								<div class="present__image image">
+									<div class="image__container">
+										<img src="img/image__car.png" alt="Present">
+									</div>
+								</div>
+								<div class="present__description description">
+									<p class="description__name">Автомобиль Mersedes - bens</p>
+									<div class="description__button">
+										<p>Забрать</p>
+									</div>
+									<div class="description__progress progress">
+										<p class="roll"></p>
+										<p class="progress__level">62%</p>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="settings" v-if="settings">
+				<img src="img/image__man4.png" alt="Man" class="settings__man">
+				<div class="settings__container">
+					<div class="settings__grid-container">
+						<div class="settings__title title">
+							<p class="title__text">Настройки</p>
+						</div>
+						<div class="settings__binds binds">
+							<p class="binds__title">Бинды</p>
+							<div class="binds__container">
+								<div class="binds__items">
+									<div class="binds__item item" v-for="i in 11">
+										<div class="item__description">
+											<p>Открыть карту</p>
+										</div>
+										<div class="item__bind" tabindex="0">
+											<p>TAB</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="settings__interface interface">
+							<p class="interface__title">Интерфейс</p>
+							<div class="interface__container">
+								<div class="interface__items">
+									<div class="interface__item item" v-for="i in 11">
+										<div class="item__description">Показывать ники игроков</div>
+										<div class="item__activation">
+											<div class="sphere"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="settings__other other">
+							<div class="other__password password">
+								<p class="password__title">Изменить пароль</p>
+								<div class="password__old-password old-password">
+									<div class="old-password__image">
+										<svg width="17" height="16" viewBox="0 0 17 16" fill="none"
+											xmlns="http://www.w3.org/2000/svg">
+											<path
+												d="M4.58088 8.61308L7.37863 11.4124L6.26001 12.5318L7.38022 13.652L6.2608 14.7715L4.30142 12.8121L2.0618 15.0517L0.942383 13.9323L3.18201 11.6919L1.22263 9.73329L2.34205 8.61387L3.46147 9.7325L4.58009 8.61308H4.58088ZM1.37463 0.375L4.18188 0.377375L13.537 9.73329L14.6572 8.61387L15.7766 9.73329L13.818 11.6927L16.0569 13.9323L14.9375 15.0517L12.6978 12.8121L10.7385 14.7715L9.61905 13.652L10.7385 12.5318L1.37701 3.17038L1.37463 0.375ZM12.8198 0.375L15.6246 0.377375L15.6262 3.16642L12.4176 6.37425L9.61826 3.57571L12.8198 0.375Z" />
+										</svg>
+									</div>
+									<input type="password" class="old-password__input" placeholder="Введите старый пароль">
+								</div>
+
+								<div class="password__new-password new-password">
+									<div class="new-password__image">
+										<svg width="17" height="16" viewBox="0 0 17 16" fill="none"
+											xmlns="http://www.w3.org/2000/svg">
+											<path
+												d="M4.58088 8.61308L7.37863 11.4124L6.26001 12.5318L7.38022 13.652L6.2608 14.7715L4.30142 12.8121L2.0618 15.0517L0.942383 13.9323L3.18201 11.6919L1.22263 9.73329L2.34205 8.61387L3.46147 9.7325L4.58009 8.61308H4.58088ZM1.37463 0.375L4.18188 0.377375L13.537 9.73329L14.6572 8.61387L15.7766 9.73329L13.818 11.6927L16.0569 13.9323L14.9375 15.0517L12.6978 12.8121L10.7385 14.7715L9.61905 13.652L10.7385 12.5318L1.37701 3.17038L1.37463 0.375ZM12.8198 0.375L15.6246 0.377375L15.6262 3.16642L12.4176 6.37425L9.61826 3.57571L12.8198 0.375Z" />
+										</svg>
+									</div>
+									<input type="password" class="new-password__input" placeholder="Введите новый пароль">
+								</div>
+
+								<div class="password__repeat-new-password repeat-new-password">
+									<div class="repeat-new-password__image">
+										<svg width="17" height="16" viewBox="0 0 17 16" fill="none"
+											xmlns="http://www.w3.org/2000/svg">
+											<path
+												d="M4.58088 8.61308L7.37863 11.4124L6.26001 12.5318L7.38022 13.652L6.2608 14.7715L4.30142 12.8121L2.0618 15.0517L0.942383 13.9323L3.18201 11.6919L1.22263 9.73329L2.34205 8.61387L3.46147 9.7325L4.58009 8.61308H4.58088ZM1.37463 0.375L4.18188 0.377375L13.537 9.73329L14.6572 8.61387L15.7766 9.73329L13.818 11.6927L16.0569 13.9323L14.9375 15.0517L12.6978 12.8121L10.7385 14.7715L9.61905 13.652L10.7385 12.5318L1.37701 3.17038L1.37463 0.375ZM12.8198 0.375L15.6246 0.377375L15.6262 3.16642L12.4176 6.37425L9.61826 3.57571L12.8198 0.375Z" />
+										</svg>
+									</div>
+									<input type="password" class="repeat-new-password__input"
+										placeholder="Повторите новый пароль">
+								</div>
+							</div>
+							<div class="other__sound sound">
+								<p class="sound__title">Звук</p>
+								<div class="sound__items">
+									<div class="sound__item item">
+										<p class="item__description">Дальность слышимости игроков</p>
+										<div class="item__slider slider">
+											<div class="slider__container">
+												<div class="slider__track"></div>
+												<div class="slider__fill"></div>
+												<div class="slider__thumb"></div>
+												<input type="range" class="slider__input" min="1" max="170" value="78">
+											</div>
+											<div class="slider__value"><span class="value">88</span>%</div>
+										</div>
+									</div>
+									<div class="sound__item item">
+										<p class="item__description">Дальность слышимости игроков</p>
+										<div class="item__slider slider">
+											<div class="slider__container">
+												<div class="slider__track"></div>
+												<div class="slider__fill"></div>
+												<div class="slider__thumb"></div>
+												<input type="range" class="slider__input" min="1" max="170" value="78">
+											</div>
+											<div class="slider__value"><span class="value">88</span>%</div>
+										</div>
+									</div>
+									<div class="sound__item item">
+										<p class="item__description">Дальность слышимости игроков</p>
+										<div class="item__slider slider">
+											<div class="slider__container">
+												<div class="slider__track"></div>
+												<div class="slider__fill"></div>
+												<div class="slider__thumb"></div>
+												<input type="range" class="slider__input" min="1" max="170" value="78">
+											</div>
+											<div class="slider__value"><span class="value">88</span>%</div>
+										</div>
+									</div>
+									<div class="sound__item item">
+										<p class="item__description">Дальность слышимости игроков</p>
+										<div class="item__slider slider">
+											<div class="slider__container">
+												<div class="slider__track"></div>
+												<div class="slider__fill"></div>
+												<div class="slider__thumb"></div>
+												<input type="range" class="slider__input" min="1" max="170" value="78">
+											</div>
+											<div class="slider__value"><span class="value">88</span>%</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<img src="img/image__gear.png" alt="Gear" class="settings__gear gear1">
+				<img src="img/image__gear.png" alt="Gear" class="settings__gear gear2">
+				<img src="img/image__gear.png" alt="Gear" class="settings__gear gear3">
+			</div>
+
+			<div class="faq" v-if="faq">
+				<img src="img/image__woman.png" alt="Woman" class="faq__woman">
+				<div class="faq__container">
+					<div class="faq__grid-container">
+						<div class="faq__professions professions">
+							<div class="professions__container">
+								<div class="professions__items">
+									<div class="professions__item item" v-for="(item, i) in faqList" :class="{active: i == 0}">
+										<div class="item__container">
+											<div class="item__image">
+												<svg width="17" height="17" viewBox="0 0 17 17" fill="none"
+													xmlns="http://www.w3.org/2000/svg">
+													<path
+														d="M8.49968 16.4168C4.1273 16.4168 0.583008 12.8725 0.583008 8.50016C0.583008 4.12779 4.1273 0.583496 8.49968 0.583496C12.8721 0.583496 16.4163 4.12779 16.4163 8.50016C16.4163 12.8725 12.8721 16.4168 8.49968 16.4168ZM7.70801 10.8752V12.4585H9.29134V10.8752H7.70801ZM9.29134 9.57287C9.92758 9.38111 10.4738 8.96721 10.8305 8.40654C11.1872 7.84588 11.3306 7.17575 11.2347 6.5182C11.1388 5.86065 10.8098 5.25943 10.3079 4.82402C9.80586 4.38862 9.16418 4.14801 8.49968 4.146C7.8591 4.14595 7.23828 4.36778 6.7428 4.77378C6.24732 5.17978 5.90777 5.74487 5.78188 6.37295L7.33513 6.68408C7.37921 6.46355 7.48501 6.26006 7.64022 6.09731C7.79542 5.93455 7.99365 5.81922 8.21184 5.76472C8.43004 5.71023 8.65922 5.71881 8.87273 5.78947C9.08623 5.86014 9.27528 5.98998 9.41788 6.16388C9.56047 6.33779 9.65075 6.54862 9.67822 6.77183C9.70568 6.99504 9.66919 7.22147 9.57299 7.42475C9.4768 7.62804 9.32486 7.79983 9.13485 7.92013C8.94484 8.04044 8.72457 8.10432 8.49968 8.10433C8.28971 8.10433 8.08835 8.18774 7.93988 8.3362C7.79142 8.48467 7.70801 8.68603 7.70801 8.896V10.0835H9.29134V9.57287Z"
+														fill="white" />
+												</svg>
+
+											</div>
+											<p class="item__title">{{item.title}}</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="faq__description description">
+							<p class="description__title">FAQ</p>
+							<p class="description__text1">В данном разделе вы можете узнать о всех профессиях присутствующих на
+								нешем проекте.</p>
+							<div class="description__container">
+								<p class="description__profession-name">{{checkedFaq.title}}</p>
+								<div class="description__text" v-html="checkedFaq.description">
+								</div>
+								<div class="description__image">
+									<img src="img/image__bus.jpg" alt="Prof_image">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="donate" v-if="donat">
+				<main class="main" v-if="active">
+					<div class="container">
+
+						<div class="header">
+							<div class="title">
+								<div class="title__image">
+									<img src="img/basket_icon.png" alt="">
+								</div>
+								<p class="title__text">მაღაზია</p>
+							</div>
+							<div class="balance">
+								<p class="balance__text">თქვენი ბალანსია:</p>
+								<p class="balance__value">{{balance}}</p>
+							</div>
+							<div class="balance-check">
+								<div class="balance-check__button" @click="balanceCheck()">
+									<p>ბალანსის შემოწმება</p>
+								</div>
+							</div>
+							<div class=" warning-remove">
+								<div class="warning-remove__button" @click="warningRemove()">
+									<img src="img/warning_icon.png" alt="Warning">
+									<p>გაფრთხილების მოხსნა</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="body">
+							<div class="prime">
+								<p class="prime__title">პრაიმ ბილეთი</p>
+								<p class="prime__choose-days">ბილეთის შეძენა:</p>
+								<div class="prime__days">
+									<div class="prime__7-days">
+										<p>7 დღით</p>
+									</div>
+									<div class="prime__30-days">
+										<p>30 დღით</p>
+									</div>
+								</div>
+								<div class="prime__info">
+									<div class="info__container">
+										<ul class="info__list">
+											<li>ავტომობილის მომენტალურად შეძენა</li>
+											<li>ეს არ ვიცი რა არის</li>
+											<li>ორგანიზაციის დატოვების უფლება</li>
+											<li>3 სახლის ქონის უფლება</li>
+											<li>ძალის მომატების ინდიკატორის დაჩქარება</li>
+											<li>არ კარგავთ იარაღს თამაშიდან გასვლისას</li>
+											<li>არ ვიცი რას ნიშნავს</li>
+											<li>ულიმიტო ტრანსპორტის<br />ყოლის უფლება</li>
+											<li>არ ვიცი რას ნიშნავს</li>
+											<li>არ ვიცი რას ნიშნავს</li>
+											<li>არ ვიცი რას ნიშნავს</li>
+											<li>არ ვიცი რას ნიშნავს</li>
+											<li>არ ვიცი რას ნიშნავს</li>
+										</ul>
+									</div>
+								</div>
+								<img src="img/girl-1.png" alt="Girl" class="prime__image">
+								<div class="prime__logo"><img src="img/hype_logo.png" alt="" class="logo"></div>
+							</div>
+							<div class="car">
+								<div class="car__button" @click="cars()">
+									<p>შეიძინეთ</p>
+								</div>
+								<div class="car__text">
+									<p class="car__title"><span class="first-word">დონატ</span><br />ავტომობილები</p>
+									<p class="car__comment">გსურთ განსხვავებული ავტომობილი?</p>
+								</div>
+								<img src="img/car-1.png" alt="Car" class="car__image-1">
+								<img src="img/car-2.png" alt="Car" class="car__image-2">
+							</div>
+							<div class="stuff">
+								<p class="stuff__title">პრემიუმ<br />ტანსაცმელი</p>
+								<p class="stuff__comment">თუ სხვა ყველაფერი მოგბეზრდა</p>
+								<div class="stuff__button" @click="stuff()">
+									<p>დათვალიერება</p>
+								</div>
+								<img src="img/jacket-1.png" alt="jacket" class="stuff__image-1">
+								<img src="img/jacket-2.png" alt="jacket" class="stuff__image-2">
+							</div>
+							<div class="case">
+								<p class="case__title">იღბალს<br />მიენდობი?</p>
+								<p class="case__comment">მოიგე განსხვავებული პრიზი</p>
+								<div class="case__button" @click="acceptCase()">
+									<p>ქეისების გახსნა</p>
+								</div>
+								<img src="img/case-1.png" alt="Case" class="case__image-1">
+								<img src="img/case-2.png" alt="Case" class="case__image-2">
+							</div>
+							<div class="car-number">
+								<p class="car-number__title"><span class="first-word">სასურველი</span><br />ნომერი</p>
+								<p class="car-number__comment">გსურს უნიკალური ნომერი ავტომობილზე?</p>
+								<div class="car-number__button" @click="carNumberPlate()">
+									<p>შეძენა</p>
+								</div>
+								<img src="img/number.png" alt="Number" class="car-number__image-2">
+								<img src="img/number.png" alt="Number" class="car-number__image-1">
+							</div>
+							<div class="wheel">
+								<p class="wheel__comment">გსურს გართობა და თან მოგება?</p>
+								<p class="wheel__title"><span class="first-word">დაატრიალე</span><br />ბორბალი</p>
+								<div class="wheel__button" @click="wheelModal()">
+									<p>დატრიალება</p>
+								</div>
+								<img src="img/wheel.png" alt="Wheel" class="wheel__image">
+							</div>
+							<div class="inventory">
+								<p class="inventory__comment">გაიზარდე ინვენტარის მოცულობა</p>
+								<p class="inventory__title"><span class="first-word">ინვენტარის</span><br />გაზრდა</p>
+								<div class="inventory__button" @click="inventoryModal()">
+									<p>შეძენა</p>
+								</div>
+								<img src="img/bag-1.png" alt="Bag" class="inventory__image-1">
+								<img src="img/bag-2.png" alt="Bag" class="inventory__image-2">
+							</div>
+						</div>
+
+						<div class="footer">
+							<div class="container">
+								<ul class="footer__button-list">
+									<li @click="visualChange()">გარეგნობის შეცვლა</li>
+									<li @click="nameChange()">სახელის და გვარის შეცვლა</li>
+									<li @click="idChange()">ID - ის შეცვლა</li>
+									<li @click="buyLicenses()">ლიცენზიების ნაკრები</li>
+									<li @click="packs()">დონატ ნაკრები</li>
+									<li @click="convertCoin()">HYPE COIN - ის კონვერტაცია</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</main>
+			</div>
+
+
+			<div class="correction-blue__1"></div>
+			<div class="correction-blue__2"></div>
+			<div class="correction-red"></div>
+			<transition name="modal">
+				<div class="modal-window modal" v-if="transportModule || buisnessModule || parkingModule || housesModule">
+					<div class="modal__container">
+						<img src="img/icon__close.svg" alt="Close" class="modal__close-button" @click="closeModal()">
+						<div class="modal__title">
+							<p>{{modalHeader}}</p>
+						</div>
+						<div class="modal__items">
+							<div class="modal__item" v-for="item in list">
+								<div class="modal__item-container">
+									<div class="modal__image">
+										<img v-if="transportModule" src="img/icon__car.svg" alt="Icon">
+										<img v-if="buisnessModule" src="img/icon__car.svg" alt="Icon">
+										<img v-if="parkingModule" src="img/icon__car.svg" alt="Icon">
+										<img v-if="housesModule" src="img/icon__car.svg" alt="Icon">
+									</div>
+									<div class="modal__name">{{item}}</div>
+									<div class="modal__show-button">
+										<p>Показать на карте</p>
+									</div>
+								</div>
+							</div>
+							<p v-if="list.length == 0">Здесь еще ничего нет</p>
+						</div>
+					</div>
+				</div>
+			</transition>
+
+
+			<transition name="modal">
+				<div class="modal-window warning-popup" v-if="warningRemoveModal">
+					<div class="warning-popup__container">
+						<p class="warning-popup__text-1">ნამდვილად გსურთ</p>
+						<p class="warning-popup__text-2">გაფრთხილების მოხსნა?</p>
+						<p class="warning-popup__text-3">განთავისუფლდი გართხილებისგან.</p>
+						<div class="warning-popup__buy-button">
+							<img src="img/coin_icon.png" alt="Coins">
+							<p>500</p>
+						</div>
+					</div>
+					<div class="warning-popup__close-button" @click="closeModal()">
+						<p>უკან დაბრუნება</p>
+					</div>
+				</div>
+			</transition>
+			<transition name="modal">
+				<div class="modal-window wheel-popup" v-if="wheelModalActive">
+					<div class="wheel-popup__container">
+						<p class="wheel-popup__text-1">იგრძენი იღბალი?</p>
+						<p class="wheel-popup__text-2">აირჩიე სასურველი და მიიღე განსხვავებული პრიზი!</p>
+						<div class="wheel-popup__grid-container">
+							<div class="wheel-popup__item">
+								<div class="item__name">REGULAR ROLL</div>
+								<img src="img/wheel-2.png" alt="Wheel" class="item__wheel-image-1">
+								<div class="item__button">
+									<img src="img/coin_icon.png" alt="">
+									<p>1500</p>
+								</div>
+							</div>
+							<div class="wheel-popup__item">
+								<div class="item__name">SUPER ROLL</div>
+								<img src="img/wheel-2.png" alt="Wheel" class="item__wheel-image-2">
+								<div class="item__button">
+									<img src="img/coin_icon.png" alt="">
+									<p>1500</p>
+								</div>
+							</div>
+							<div class="wheel-popup__item">
+								<div class="item__name">DIAMOND ROLL</div>
+								<div class="item__image">
+									<img src="img/wheel-2.png" alt="Wheel" class="item__wheel-image-3">
+								</div>
+								<div class="item__button">
+									<img src="img/coin_icon.png" alt="">
+									<p>1500</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="wheel-popup__close-button" @click="closeModal()">
+						<p>უკან დაბრუნება</p>
+					</div>
+				</div>
+			</transition>
+			<transition name="modal">
+				<div class="modal-window inventory-popup" v-if="inventoryModalActive">
+					<div class="inventory-popup__container">
+						<div class="inventory-popup__text-1">
+							<p>ინვენტარის</p>
+						</div>
+						<div class="inventory-popup__text-2">
+							<p>მოცულობის გაზრდა</p>
+						</div>
+						<div class="inventory-popup__text-3">
+							<p>ადგილი აღარ გყოფნით? დაიღალეთ ლიმიტირებული წონით? მაშინ
+								შეიძინეთ<br />გაზრდილი ინვენტარი. გაითვალისწინეთ რომ კონკრეტული სერვისი გაგიზრდით
+								მხოლოდ<br />
+								ინვენტარს [და
+								თქვენ არ ყიდულობთ რაიმე ვიზუალურ ჩანთთას]</p>
+						</div>
+						<div class="inventory-popup__grid-container">
+							<div class="inventory-popup__item">
+								<div class="inventory-popup__image-container">
+									<img src="img/bag-3.png" alt="" class="inventory-popup__image image-1">
+									<p class="inventory-popup__text-4">მოცულობა:</p>
+									<p class="inventory-popup__value">20KG</p>
+								</div>
+								<div class="inventory-popup__button">
+									<img src="img/coin_icon.png" alt="Coin">
+									<p>1000</p>
+								</div>
+							</div>
+							<div class="inventory-popup__item">
+								<div class="inventory-popup__image-container">
+									<img src="img/bag-3.png" alt="" class="inventory-popup__image">
+									<p class="inventory-popup__text-4">მოცულობა:</p>
+									<p class="inventory-popup__value">25KG</p>
+								</div>
+								<div class="inventory-popup__button">
+									<img src="img/coin_icon.png" alt="Coin">
+									<p>1500</p>
+								</div>
+							</div>
+							<div class="inventory-popup__item">
+								<div class="inventory-popup__image-container">
+									<img src="img/bag-3.png" alt="" class="inventory-popup__image image-3">
+									<p class="inventory-popup__text-4">მოცულობა:</p>
+									<p class="inventory-popup__value">30KG</p>
+								</div>
+								<div class="inventory-popup__button">
+									<img src="img/coin_icon.png" alt="Coin">
+									<p>2000</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="inventory-popup__close-button" @click="closeModal()">
+						<p>უკან დაბრუნება</p>
+					</div>
+				</div>
+			</transition>
+			<transition name="modal">
+				<div class="modal-window convert-coin" v-if="convertCoinActive">
+					<div class="convert-coin__container">
+						<div class="convert-coin__block">
+							<p class="convert-coin__text">თქვენი ბალანსია:</p>
+							<p class="convert-coin__balance">{{balance}}</p>
+							<form action="" class="convert-coin__form">
+								<input type="number" class="convert-coin__input" placeholder="HYPE COIN ის რაოდენობა">
+								<div class="convert-coin__output">დაგერიცხებათ&nbsp;<span class="value">...</span></div>
+								<button class="convert-coin__button">კონვერტაცია</button>
+							</form>
+						</div>
+					</div>
+					<div class="convert-coin__close-button" @click="closeModal()">
+						<p>უკან დაბრუნება</p>
+					</div>
+				</div>
+			</transition>
+			<transition name="modal">
+				<div class="modal-window packs" v-if="packsActive">
+					<div class="packs__container">
+						<p class="packs__title"><span class="packs__first-word">შეიძინე</span><br />სასურველი ნაკრები</p>
+						<p class="packs__text">აირჩიე სასურველი ნაკრებებიდან ერთერთი და გაიმარტივე<br />ცხოვრება შტატში.
+						</p>
+						<div class="packs__grid-container">
+							<div class="packs__item">
+								<div class="packs__item-container">
+									<img src="img/pack__bronze.png" alt="Pack" class="packs__image">
+									<div class="packs__points">
+										<p class="packs__vip-name">BRONZE VIP</p>
+										<p class="packs__money">80 000$</p>
+										<p class="packs__licenses">DRIVER LICENSE</p>
+										<p class="packs__case">1X DONATE CASE</p>
+										<p class="packs__riffle">CARABINE RIFLE</p>
+									</div>
+								</div>
+								<div class="packs__item-button">
+									<img src="img/coin_icon.png" alt="Coin">
+									<p>600</p>
+								</div>
+							</div>
+							<div class="packs__item">
+								<div class="packs__item-container">
+									<img src="img/pack__silver.png" alt="Pack" class="packs__image">
+									<div class="packs__points">
+										<p class="packs__vip-name">SILVER VIP</p>
+										<p class="packs__money">150 000$</p>
+										<p class="packs__licenses">ALL LICENSES</p>
+										<p class="packs__case">2X DONATE CASE</p>
+										<p class="packs__riffle">CARABINE RIFLE</p>
+									</div>
+								</div>
+								<div class="packs__item-button">
+									<img src="img/coin_icon.png" alt="Coin">
+									<p>1500</p>
+								</div>
+							</div>
+							<div class="packs__item">
+								<div class="packs__item-container">
+									<img src="img/pack__gold.png" alt="Pack" class="packs__image">
+									<div class="packs__points">
+										<p class="packs__vip-name">GOLD VIP</p>
+										<p class="packs__money">250 000$</p>
+										<p class="packs__licenses">ALL LICENSES</p>
+										<p class="packs__case">5X DONATE CASE</p>
+										<p class="packs__riffle">2X CARABINE RIFLE</p>
+									</div>
+								</div>
+								<div class="packs__item-button">
+									<img src="img/coin_icon.png" alt="Coin">
+									<p>3000</p>
+								</div>
+							</div>
+							<div class="packs__item">
+								<div class="packs__item-container">
+									<img src="img/pack__diamond.png" alt="Pack" class="packs__image">
+									<div class="packs__points">
+										<p class="packs__vip-name">DIAMOND VIP</p>
+										<p class="packs__money">600 000$</p>
+										<p class="packs__licenses">ALL LICENSES</p>
+										<p class="packs__case">10X DONATE CASE</p>
+										<p class="packs__riffle">2X SNIPER RIFLE</p>
+									</div>
+								</div>
+								<div class="packs__item-button">
+									<img src="img/coin_icon.png" alt="Coin">
+									<p>6000</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="packs__close-button" @click="closeModal()">
+						<p>უკან დაბრუნება</p>
+					</div>
+				</div>
+			</transition>
+			<transition name="modal">
+				<div class="modal-window buy-licenses" v-if="buyLicensesActive">
+					<div class="buy-licenses__container">
+						<div class="buy-licenses__block">
+							<p class="buy-licenses__text-1">ნამდვილად გსურთ</p>
+							<p class="buy-licenses__text-2">ლიცენზიების შეძენა?</p>
+							<p class="buy-licenses__text-3">კალეტში შედის შტატში არსებული ყველა ლიცენზია.<br />გაეცანით
+								ლიცენზიების
+								ჩამონათვალს:</p>
+							<div class="buy-licenses__licenses">
+								<p v-for="(license) in licensesList">{{license}}</p>
+							</div>
+							<div class="buy-licenses__button">
+								<img src="img/coin_icon.png" alt="Coin">
+								<p>1500</p>
+							</div>
+						</div>
+					</div>
+					<img src="img/girl-1-large.png" alt="Girl" class="buy-licenses__image">
+					<div class="buy-licenses__close-button" @click="closeModal()">
+						<p>უკან დაბრუნება</p>
+					</div>
+				</div>
+			</transition>
+			<transition name="modal">
+				<div class="modal-window accept-case" v-if="acceptCaseActive">
+					<div class="accept-case__container">
+						<p class="accept-case__text-1">ნამდვილად გსურთ</p>
+						<p class="accept-case__text-2">ყუთის გახსნა?</p>
+						<p class="accept-case__text-3">ენდობით იღბალს? მაშინ რაღას უცდი!</p>
+						<div class="accept-case__button">
+							<img src="img/coin_icon.png" alt="Coin">
+							<p>1500</p>
+						</div>
+					</div>
+					<img src="img/case-1.png" alt="Case" class="accept-case__image-1">
+					<img src="img/case-2.png" alt="Case" class="accept-case__image-2">
+					<div class="accept-case__close-button" @click="closeModal()">
+						<p>უკან დაბრუნება</p>
+					</div>
+				</div>
+			</transition>
+			<transition name="modal">
+				<div class="modal-window car-number-plate" v-if="carNumberPlateActive">
+					<div class="car-number-plate__container">
+						<p class="car-number-plate__text-1">ნამდვილად გსურთ</p>
+						<p class="car-number-plate__text-2">მანქანის ნომრის შეძენა</p>
+						<p class="car-number-plate__text-3">თანხმობის შემთხვევაში მიუთითეთ სასურველი ნომერი</p>
+						<form action="" class="car-number-plate__form">
+							<input type="text" class="car-number-plate__input-1" maxlength="10">
+							<input type="text" class="car-number-plate__input-2" maxlength="10">
+							<div class="car-number-plate__label">
+								<p>მიუთითთ სასურვილი ნომერი</p>
+							</div>
+							<button class="car-number-plate__button">
+								<img src="img/coin_icon.png" alt="Coin">
+								<p>500</p>
+							</button>
+						</form>
+					</div>
+					<img src="img/car-1.png" alt="Car" class="car-number-plate__image-1">
+					<img src="img/car-2.png" alt="Car" class="car-number-plate__image-2">
+					<img src="img/number.png" alt="Plate" class="car-number-plate__image-3">
+					<img src="img/number.png" alt="Plate" class="car-number-plate__image-4">
+					<div class="car-number-plate__close-button" @click="closeModal()">
+						<p>უკან დაბრუნება</p>
+					</div>
+				</div>
+			</transition>
+			<transition name="modal">
+				<div class="modal-window id-change" v-if="idChangeActive">
+					<div class="id-change__container">
+						<p class="id-change__text-1">ნამდვილად გსურთ</p>
+						<p class="id-change__text-2">სახელის ID ის შეცვლა?</p>
+						<p class="id-change__text-3">თანხმობის შემთხვევაში მიუთითეთ სასურველი ID</p>
+						<form action="" class="id-change__form">
+							<input type="text" class="id-change__input" placeholder="მიუთითთ სასურვილი ID">
+							<button class="id-change__button">
+								<img src="img/coin_icon.png" alt="Coin">
+								<p>500</p>
+							</button>
+						</form>
+					</div>
+					<img src="img/grab.png" alt="Car" class="id-change__image">
+					<div class="id-change__close-button" @click="closeModal()">
+						<p>უკან დაბრუნება</p>
+					</div>
+				</div>
+			</transition>
+			<transition name="modal">
+				<div class="modal-window name-change" v-if="nameChangeActive">
+					<div class="name-change__container">
+						<p class="name-change__text-1">ნამდვილად გსურთ</p>
+						<p class="name-change__text-2">სახელის და გვარის შეცვლა?</p>
+						<p class="name-change__text-3">თანხმობის შემთხვევაში მიუთითეთ ახალი სახელი და გვარი</p>
+						<form action="" class="name-change__form">
+							<input type="text" class="name-change__input" placeholder="მიუთითეთ სახელი და გვარი">
+							<button class="name-change__button">
+								<img src="img/coin_icon.png" alt="Coin">
+								<p>500</p>
+							</button>
+						</form>
+					</div>
+					<img src="img/girl-2.png" alt="Car" class="name-change__image">
+					<div class="name-change__close-button" @click="closeModal()">
+						<p>უკან დაბრუნება</p>
+					</div>
+				</div>
+			</transition>
+			<transition name="modal">
+				<div class="modal-window visual-change" v-if="visualChangeActive">
+					<div class="visual-change__container">
+						<p class="visual-change__text-1">ნამდვილად გსურთ</p>
+						<p class="visual-change__text-2">სახელის და გვარის შეცვლა?</p>
+						<p class="visual-change__text-3">თანხმობის შემთხვევაში სერვისის ღირებულებაა: <span>50
+								000$</span><br />და
+							თქვენი პერსონაჟი ავტომატურად გადაინაცვლების<br />ქირურგის კაბინეტში.</p>
+						<div class="visual-change__buttons">
+							<div class="visual-change__button-cancel" @click="closeModal()">
+								<p>გაუქმება</p>
+							</div>
+							<div class="visual-change__button-accept">
+								<p>თანხმობა</p>
+							</div>
+						</div>
+					</div>
+					<div class="visual-change__close-button" @click="closeModal()">
+						<p>უკან დაბრუნება</p>
+					</div>
+				</div>
+			</transition>
+
+			<transition name="modal">
+				<div class="modal-window cars-stuff" v-if="carsStuffActive">
+					<div class="cars-stuff__container">
+						<ul class="cars-stuff__list list">
+							<li v-for="(car, index) in carsList" v-if="carsActive" @click="changeShow(index)"
+								:class="{active: index == 0}">
+								<div class="list__name-container">
+									<p class="list__name">{{car[0]}} {{car[1]}}</p>
+								</div>
+								<div class="list__image-container">
+									<img :src="car[2]" alt="Car" class="list__image">
+								</div>
+							</li>
+
+							<li v-for="(stuff, index) in stuffList" v-if="stuffActive" @click="changeShow(index)"
+								:class="{active: index == 0}">
+								<div class=" list__name-container">
+									<p class="list__name">{{stuff[0]}}</p>
+								</div>
+								<div class="list__image-container">
+									<img :src="stuff[2][0]" alt="Stuff" class="list__image">
+								</div>
+							</li>
+						</ul>
+
+						<div class="cars-stuff__info info">
+							<p class="info__name">{{show[0]}}</p>
+							<p class="info__model">{{show[1]}}</p>
+							<p class="info__price"><span>PRICE:</span> {{show[3]}}$</p>
+						</div>
+
+						<div class="cars-stuff__preview preview">
+							<div class="preview__container">
+								<img :src="show[2]" alt="Preview" class="preview__image" v-if="carsActive">
+								<img :src="show[2][0]" alt="Preview" class="preview__image" v-if="stuffActive">
+							</div>
+						</div>
+
+						<div class="cars-stuff__color-selection color-selection">
+							<div class="color-selection__container">
+								<p class="color-selection__title">
+									<span class="color-selection__first-word">color</span><br />
+									selection
+								</p>
+								<div class="color-selection__car-colors car-colors" v-if="carsActive">
+									<div class="car-colors__container">
+										<div class="car-colors_white"></div>
+										<div class="car-colors_black"></div>
+										<div class="car-colors_red"></div>
+										<div class="car-colors_pink"></div>
+										<div class="car-colors_violet"></div>
+										<div class="car-colors_blue"></div>
+										<div class="car-colors_light-green"></div>
+										<div class="car-colors_light-blue"></div>
+										<div class="car-colors_green"></div>
+										<div class="car-colors_yellow"></div>
+									</div>
+								</div>
+								<div class="color-selection__stuff-colors stuff-colors" v-if="stuffActive">
+									<div class="stuff-colors__container">
+										<div class="stuff-colors__counter counter">
+											<div class="counter__left-corner">
+												<img src="img/left-corner.svg" alt="Back">
+											</div>
+											<div class="counter__body-counter">
+												<form action=""><input type="text" value="0" class="counter__input" disabled
+														min="0">
+												</form>
+											</div>
+											<div class=" counter__right-corner">
+												<img src="img/right-corner.svg" alt="Forward">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="cars-stuff__characteristics characteristics">
+							<div class="characteristics__container">
+								<div class="characteristics__image-container">
+									<img :src="show[4]" alt="Car_logo" class="characteristics__image" v-if="carsActive">
+									<img src="img/male-icon.svg" alt="Gender_logo" class="characteristics__image"
+										v-if="stuffActive && show[4] == 0">
+									<img src="img/female-icon.svg" alt="Gender_logo" class="characteristics__image"
+										v-if="stuffActive && show[4] == 1">
+								</div>
+								<div class="characteristics__stats stats">
+									<div class="stats__container" v-if="carsActive">
+										<div class="stats__item">
+											<p class="stats__item-name">სიჩქარე</p>
+											<div class="stats__value-container">
+												<div :class="{active: show[5][0] >= j}" v-for="j in 5"></div>
+											</div>
+										</div>
+										<div class="stats__item">
+											<p class="stats__item-name">მართვა</p>
+											<div class="stats__value-container">
+												<div :class="{active: show[5][1] >= j}" v-for="j in 5"></div>
+											</div>
+										</div>
+										<div class="stats__item">
+											<p class="stats__item-name">მართვ</p>
+											<div class="stats__value-container">
+												<div :class="{active: show[5][2] >= j}" v-for="j in 5"></div>
+											</div>
+										</div>
+										<div class="stats__item">
+											<p class="stats__item-name">აჩქარება</p>
+											<div class="stats__value-container">
+												<div :class="{active: show[5][3] >= j}" v-for="j in 5"></div>
+											</div>
+										</div>
+										<div class="stats__item">
+											<p class="stats__item-name">მუხრუჭები</p>
+											<div class="stats__value-container">
+												<div :class="{active: show[5][4] >= j}" v-for="j in 5"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="cars-stuff__buttons buttons">
+							<div class="buttons__accept-button" :class="{stuff_active: stuffActive}">
+								<p>ყიდვა</p>
+							</div>
+							<div class="buttons__cancel-button" v-if="carsActive">
+								<p>ტესტ დრაივი</p>
+							</div>
+						</div>
+
+					</div>
+					<div class="cars-stuff__close-button" @click="closeModal()">
+						<p>დახურვა</p>
+					</div>
+				</div>
+			</transition>
+
+			<transition name="fade">
+				<div class="fade"
+					v-if="housesModule || parkingModule || buisnessModule || transportModule || warningRemoveModal || wheelModalActive || inventoryModalActive || convertCoinActive || packsActive || buyLicensesActive || acceptCaseActive || carNumberPlateActive || idChangeActive || nameChangeActive || visualChangeActive || carsStuffActive">
+					<div class="correction-blue__1"></div>
+					<div class="correction-blue__2"></div>
+					<div class="correction-red"></div>
+				</div>
+			</transition>
+		</div>
+
+		
+	</div>
+	<script src="js/script.js"></script>
+</body>
+
+</html>
