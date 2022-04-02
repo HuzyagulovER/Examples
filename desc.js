@@ -245,12 +245,11 @@ int = setInterval(async () => {
 						return r.json()
 					}).then(examples => {
 						for (let i = 0; i < examples.length; i++) {
-							if (examples[i].href.includes(location.pathname)) {
+							if (examples[i].href.includes(location.pathname.substr(10).slice(0, -1))) {
 								this.example = examples[i]
 								break
 							}
 						}
-						console.log('ex');
 					})
 
 					if (this.example) {
@@ -269,8 +268,6 @@ int = setInterval(async () => {
 									break
 								}
 							}
-							console.log(this.client);
-							console.log('cli');
 						})
 					}
 				},
